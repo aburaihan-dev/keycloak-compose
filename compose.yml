@@ -1,8 +1,8 @@
 x-logging: &logging
   driver: "json-file"
   options:
-    max-size: "10m"
-    max-file: "3"
+    max-size: "15m"
+    max-file: "5"
 
 services:
   postgres:
@@ -15,10 +15,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
     volumes:
-      - type: tmpfs
-        target: /var/lib/postgresql/data
-        tmpfs:
-          size: 100000000
+      - postgres_data:/var/lib/postgresql/data
     logging: *logging
 
   keycloak:
@@ -87,3 +84,9 @@ services:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
       - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
     logging: *logging
+
+
+volumes:
+  postgres_data:
+    name: postgres_data
+    driver: local
