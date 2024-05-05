@@ -40,6 +40,9 @@ services:
     volumes:
       - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json:ro
     logging: *logging
+    networks:
+      - default
+      - nginx-proxy-man
 
   prometheus:
     image: prom/prometheus:${PROMETHEUS_VERSION}
@@ -90,3 +93,7 @@ volumes:
   postgres_data:
     name: postgres_data
     driver: local
+
+networks:
+  nginx-proxy-man:
+    external: true
